@@ -1,0 +1,12 @@
+parameters:
+
+services:
+    deepspaceone.form.extension.bootstrap:
+        class: DeepSpaceOne\GameBundle\Form\Extension\FormTypeBootstrapExtension
+        tags:
+            - { name: form.type_extension, alias: form }
+
+    deepspaceone.form.shipclass:
+        class: DeepSpaceOne\GameBundle\Form\ShipClassType
+        tags:
+            - { name: form.type, alias: deepspaceone_shipclass }
