@@ -1,0 +1,18 @@
+{{ form_start(form) }}
+    {{ form_errors(form) }}
+    <fieldset>
+        <legend>Please fill out the fields below:</legend>
+        <div class="form-group {% if not form.name.vars.valid %} has-error {% endif %}">
+            {{ form_label(form.name) }}
+            <div class="col-lg-6">
+                {{ form_widget(form.name) }}
+                {{ form_errors(form.name) }}
+                {% if not form.name.vars.submitted%}
+                    <div class="help-block">e.g. "Gold"</div>
+                {% endif %}
+            </div>
+        </div>
+        {{ form_row(form.pricePerTon) }}
+    </fieldset>
+    {{ form_row(form.submit) }}
+{{ form_end(form) }}
