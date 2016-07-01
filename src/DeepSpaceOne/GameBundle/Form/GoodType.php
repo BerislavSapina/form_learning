@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: bsapi
- * Date: 18.6.2016.
- * Time: 11:33
+ * Date: 1.7.2016.
+ * Time: 20:25
  */
 
 namespace DeepSpaceOne\GameBundle\Form;
@@ -12,29 +12,32 @@ namespace DeepSpaceOne\GameBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints\GreaterThan;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotNull;
-
 
 class GoodType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function getName()
     {
-        $builder
-            ->add('name','text')
-            ->add('pricePerTon','integer')
-            ->add('create','submit');
-    }
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $options = array(
-            'data_class' => '\\DeepSpaceOne\\GameBundle\\Entity\\Good',
-        );
+        return 'deepspaceone_good';
     }
 
-    function getName()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return 'game_good';
+        $resolver->setDefaults(array(
+            'data_class' => 'DeepSpaceOne\\GameBundle\\Entity\\Good',
+            'submit_label' => 'Submit',
+        ));
+
+        /*$resolver->setRequired(array(
+            'submit_label',
+        ));*/
+    }
+
+    public function buildForm(FormBuilderInterface $builder,array $options)
+    {
+        $builder->add('name','text')
+                ->add('pricePerTon','integer')
+                ->add('submit','submit',array(
+                    'label' => $options['submit_label'],
+                ));
     }
 }

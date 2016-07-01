@@ -12,6 +12,6 @@ services:
             - { name: form.type, alias: deepspaceone_shipclass }
 
     deepspaceone.form.good:
-            class: DeepSpaceOne\GameBundle\Form\GoodType
-            tags:
-                - { name: form.type, alias: game_good }
+        class: DeepSpaceOne\GameBundle\Form\GoodType
+        tags:
+            - {name: form.type, alias: deepspaceone_good}

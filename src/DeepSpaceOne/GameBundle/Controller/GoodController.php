@@ -3,6 +3,7 @@
 namespace DeepSpaceOne\GameBundle\Controller;
 
 use DeepSpaceOne\GameBundle\Entity\Good;
+use DeepSpaceOne\GameBundle\Form\GoodType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -47,7 +48,7 @@ class GoodController extends Controller
     {
         // TASK 1: create form
         $form = $this ->createCreateForm();
-        //$form =$this->createForm('game_good');
+
 
         return array(
             // TASK 1: pass form to view
@@ -64,8 +65,7 @@ class GoodController extends Controller
     public function createAction(Request $request)
     {
         // TASK 1: create form and handle the request
-        $form = $this ->createCreateForm();
-       // $form = $this->createForm('game_good');
+       $form = $this ->createCreateForm();
 
         $form->handleRequest($request);
 
@@ -180,10 +180,16 @@ class GoodController extends Controller
      */
     private function createCreateForm()
     {
-        return $this->createGoodFormBuilder(new Good())
+        /*return $this->createGoodFormBuilder(new Good())
                 ->add('create','submit',array('attr' => array('class' => 'btn-info')))
                 ->setAction($this->generateUrl('goods_create'))
-                ->getForm();
+                ->getForm();*/
+
+        //TASK 3:
+        return $this->createForm('deepspaceone_good',new Good(),array(
+            'action' => $this->generateUrl('goods_create'),
+            'submit_label' => 'Create',
+        ));
     }
 
     /* Creates a form for edit a Good entity*/
@@ -193,11 +199,18 @@ class GoodController extends Controller
      */
     private function createEditForm(Good $good)
     {
-        return $this->createGoodFormBuilder($good)
+        /*return $this->createGoodFormBuilder($good)
             ->setAction($this->generateUrl('goods_update',array('id' => $good->getId())))
             ->setMethod('PUT')
             ->add('update','submit',array('attr' => array('class' => 'btn-info')))
-            ->getForm();
+            ->getForm();*/
+
+        // TASK 3:
+        return $this->createForm('deepspaceone_good',$good,array(
+            'action' => $this->generateUrl('goods_update',array('id' => $good->getId())),
+            'method' => 'PUT',
+            'submit_label' => 'Update',
+        ));
     }
     /**
      * Creates a form to delete a Good entity.
@@ -220,7 +233,7 @@ class GoodController extends Controller
      * @param Good $good
      * @return $this|\Symfony\Component\Form\FormBuilderInterface
      */
-    private function createGoodFormBuilder(Good $good)
+   /* private function createGoodFormBuilder(Good $good)
     {
         //TASK 2:
         $options = array(
@@ -228,10 +241,15 @@ class GoodController extends Controller
             '\\DeepSpaceOne\\GameBundle\\Entity\\Good'
         );
 
+        if(!$good)
+        {
+            $good = new Good();
+        }
+
         return $this->createFormBuilder($good,$options)
                 ->add('name','text')
                 ->add('pricePerTon','integer',array(
                     'property_path' => 'pricePerTonEuro'
                 ));
-    }
+    }*/
 }
