@@ -48,7 +48,7 @@ class Good
      *
      * @var integer
      */
-    private $pricePerTon;
+    private $pricePerTon = 10;
 
     /**
      * @return mixed
@@ -88,5 +88,13 @@ class Good
     public function getPricePerTon()
     {
         return $this->pricePerTon;
+    }
+
+    public function setPricePerTonEuro($pricePerTon){
+        $this->pricePerTon =(int) ($pricePerTon / 100);
+    }
+    public function getPricePerTonEuro()
+    {
+        return $this->pricePerTon*100;
     }
 }

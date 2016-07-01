@@ -8,6 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 
 /**
  * Good controller.
@@ -33,7 +36,6 @@ class GoodController extends Controller
             'goods' => $goods,
         );
     }
-
     /**
      * Displays a form to create a new Good entity.
      *
@@ -44,12 +46,14 @@ class GoodController extends Controller
     public function newAction()
     {
         // TASK 1: create form
+        $form = $this ->createCreateForm();
+        //$form =$this->createForm('game_good');
 
         return array(
             // TASK 1: pass form to view
+            'form' => $form->createView()
         );
     }
-
     /**
      * Creates a new Good entity.
      *
@@ -60,20 +64,30 @@ class GoodController extends Controller
     public function createAction(Request $request)
     {
         // TASK 1: create form and handle the request
+        $form = $this ->createCreateForm();
+       // $form = $this->createForm('game_good');
+
+        $form->handleRequest($request);
 
         // TASK 1: update if condition
-        if (false) {
+        if ($form->isValid()) {
             // TASK 1: create good
+            /*$name = $form->get('name')->getData();
+            $pricePerTon = $form->get('pricePerTon')->getData();
+            $good->setName($name);
+            $good->setPricePerTon($pricePerTon);*/
+            //TASK 2:
+            $good = $form->getData();
 
             $em = $this->getDoctrine()->getManager();
             // TASK 1: persist good
+            $em->persist($good);
             $em->flush();
 
             return $this->redirect($this->generateUrl('goods'));
         }
-
         return array(
-            // TASK 1: pass form to view
+          'form' => $form->createView()
         );
     }
 
@@ -89,11 +103,13 @@ class GoodController extends Controller
         $deleteForm = $this->createDeleteForm($good);
 
         // TASK 1: create edit form for $good
+        $editForm = $this->createEditForm($good);
 
         return array(
             'good' => $good,
             'delete_form' => $deleteForm->createView(),
             // TASK 1: pass form to view
+            'edit_form' => $editForm ->createView()
         );
     }
 
@@ -109,12 +125,22 @@ class GoodController extends Controller
         $deleteForm = $this->createDeleteForm($good);
 
         // TASK 1: create edit form and handle the request
+        $editForm = $this->createEditForm($good);;
+
+        $editForm->handleRequest($request);
 
         // TASK 1: update if condition
-        if (false) {
+        if ($editForm->isValid()) {
             // TASK 1: update $good entity
+            /*$name = $editForm->get('name')->getData();
+            $pricePerTon = $editForm->get('pricePerTon')->getData();
+            $good->setName($name);
+            $good->setPricePerTon($pricePerTon);*/
+            //TASK 2:
+            $good = $editForm->getData();
 
             $em = $this->getDoctrine()->getManager();
+            $em->persist($good);
             $em->flush();
 
             return $this->redirect($this->generateUrl('goods'));
@@ -124,6 +150,7 @@ class GoodController extends Controller
             'good' => $good,
             'delete_form' => $deleteForm->createView(),
             // TASK 1: pass form to view
+            'edit_form' => $editForm->createView()
         );
     }
 
@@ -146,7 +173,32 @@ class GoodController extends Controller
 
         return $this->redirect($this->generateUrl('goods'));
     }
+    /* Creates a form for create a Good entity*/
+    /**
+     * @param Good $good
+     * @return \Symfony\Component\Form\Form
+     */
+    private function createCreateForm()
+    {
+        return $this->createGoodFormBuilder(new Good())
+                ->add('create','submit',array('attr' => array('class' => 'btn-info')))
+                ->setAction($this->generateUrl('goods_create'))
+                ->getForm();
+    }
 
+    /* Creates a form for edit a Good entity*/
+    /**
+     * @param Good $good
+     * @return \Symfony\Component\Form\Form
+     */
+    private function createEditForm(Good $good)
+    {
+        return $this->createGoodFormBuilder($good)
+            ->setAction($this->generateUrl('goods_update',array('id' => $good->getId())))
+            ->setMethod('PUT')
+            ->add('update','submit',array('attr' => array('class' => 'btn-info')))
+            ->getForm();
+    }
     /**
      * Creates a form to delete a Good entity.
      *
@@ -162,5 +214,36 @@ class GoodController extends Controller
             ->add('delete', 'submit', array('attr' => array('class' => 'btn-danger')))
             ->getForm()
         ;
+    }
+
+    /**
+     * @param Good $good
+     * @return $this|\Symfony\Component\Form\FormBuilderInterface
+     */
+    private function createGoodFormBuilder(Good $good)
+    {
+        //TASK 2:
+        $options = array(
+            'data_class' =>
+            '\\DeepSpaceOne\\GameBundle\\Entity\\Good'
+        );
+
+        return $this->createFormBuilder($good,$options)
+                ->add('name','text',
+                    array('constraints' => array(
+                        new NotNull(),
+                        new Length(array(
+                            'min' => 2,
+                            'max' => 64,
+                            'minMessage' => 'Name you enter is too short! Please try again!'
+                        ))
+                )))
+                ->add('pricePerTon','integer',array(
+                    'constraints' => array(
+                        new NotNull(),
+                        new GreaterThan(0)
+                    ),
+                    'property_path' => 'pricePerTonEuro'
+                ));
     }
 }
