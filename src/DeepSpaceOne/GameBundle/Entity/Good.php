@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Column;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * A good that can be carried by a ship.
  *
@@ -38,6 +38,9 @@ class Good
      * @Column(type="string", nullable=false)
      *
      * @var string
+     *
+     * @Assert\NotNull
+     * @Assert\Length(min=2,minMessage="Use more characters")
      */
     private $name;
 
@@ -47,6 +50,9 @@ class Good
      * @Column(type="integer", nullable=false)
      *
      * @var integer
+     *
+     * @Assert\NotNull
+     * @Assert\GreaterThan(0)
      */
     private $pricePerTon = 10;
 

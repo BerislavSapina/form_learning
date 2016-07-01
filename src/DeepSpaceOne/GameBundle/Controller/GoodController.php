@@ -229,20 +229,8 @@ class GoodController extends Controller
         );
 
         return $this->createFormBuilder($good,$options)
-                ->add('name','text',
-                    array('constraints' => array(
-                        new NotNull(),
-                        new Length(array(
-                            'min' => 2,
-                            'max' => 64,
-                            'minMessage' => 'Name you enter is too short! Please try again!'
-                        ))
-                )))
+                ->add('name','text')
                 ->add('pricePerTon','integer',array(
-                    'constraints' => array(
-                        new NotNull(),
-                        new GreaterThan(0)
-                    ),
                     'property_path' => 'pricePerTonEuro'
                 ));
     }
