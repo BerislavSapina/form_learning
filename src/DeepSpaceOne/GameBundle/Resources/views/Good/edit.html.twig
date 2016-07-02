@@ -12,6 +12,9 @@
     {{ form_rest(edit_form) }}
     {{ form_end(edit_form) }}#}
 
+    {#TASK 5:#}
+    {% form_theme edit_form 'DeepSpaceOneGameBundle:Good:mytheme.html.twig' %}
+
     {#TASK 4#}
     {% include 'DeepSpaceOneGameBundle:Good:form.html.twig' with {'form' : edit_form} %}
 

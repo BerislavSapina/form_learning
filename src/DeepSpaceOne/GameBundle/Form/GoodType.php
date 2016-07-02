@@ -35,7 +35,9 @@ class GoodType extends AbstractType
     public function buildForm(FormBuilderInterface $builder,array $options)
     {
         $builder->add('name','text')
-                ->add('pricePerTon','integer')
+                ->add('pricePerTon','integer',array(
+                    'required' => false,
+                ))
                 ->add('submit','submit',array(
                     'label' => $options['submit_label'],
                 ));

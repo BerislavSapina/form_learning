@@ -1,0 +1,25 @@
+{% use 'BraincraftedBootstrapBundle:Form:bootstrap.html.twig' %}
+
+{#TASK 5: #}
+{% block form_label %}
+    {% if label is empty %}
+        {% set label = name|humanize %}
+    {% endif  %}
+
+    {% if required %}
+        {% set label = label ~ '*' %}
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block _deepspaceone_good_submit_widget %}
+    {#{% set attr = attr|merge({'icon' : 'ok'}) %}
+    {% set label = ' ' ~ label %}
+
+    {{ block('submit_widget') }}#}
+    {{ form_widget(form,{
+        'attr' :attr|merge({'icon' : 'ok'}),
+        'label' : ' ' ~ label,
+    }) }}
+{% endblock %}

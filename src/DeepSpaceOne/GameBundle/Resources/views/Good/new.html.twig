@@ -10,8 +10,10 @@
     {# TASK 1: render form #}
     {#{{ form(form) }}#}
 
-    {#TASK 4: Customize rendering#}
+    {#TASK 5: Themes#}
+    {% form_theme form 'DeepSpaceOneGameBundle:Good:mytheme.html.twig'  %}
 
+    {#TASK 4: Customize rendering#}
     {% include 'DeepSpaceOneGameBundle:Good:form.html.twig' with {'form' : form} %}
 
     <ul class="record_actions list-inline">
